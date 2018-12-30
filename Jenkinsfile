@@ -26,7 +26,13 @@ node('master'){
           
                 }
                 echo "$result"
-                
+                if ($result == "18"){
+                        echo "test ok"
+                }
+                else{
+                        echo "test nok"
+                        throw "test nok"
+                }
         }
         stage('Deploy') {
                 echo 'Deploying....'
