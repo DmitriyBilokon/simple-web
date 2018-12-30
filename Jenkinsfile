@@ -18,18 +18,14 @@ node('master'){
           
                 }
                 sh 'docker run -d -p 4000:80 simple-web'
+                def result
                 try{
-                        result = sh returnStdout: true, script: 'curl -v localhost:4000'
+                        result = sh returnStatus: true, script: 'curl -v localhost:4000'
                 }
                 catch (error){
           
                 }
-                if ($result.contains("200 OK")){
-                        echo "test passed"
-                }
-                else{
-                     throw "Test failed"
-                }
+                echo "$result"
                 
         }
         stage('Deploy') {
