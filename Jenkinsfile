@@ -12,6 +12,8 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing..'
+                sh 'docker run -d -p 80:80 simple-web'
+                sh 'curl localhost:80'
             }
         }
         stage('Deploy') {
