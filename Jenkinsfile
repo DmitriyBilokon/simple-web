@@ -55,7 +55,7 @@ node('master'){
         echo 'Create Kube Clusters...'
         sh 'gcloud config set project gitdocker'
         sh "gcloud container clusters create simple-web-${env.BUILD_NUMBER} --zone us-central1-a --num-nodes 2"
-        
+        sh 'kubectl apply -f ./DeploymentYaml'
         
         }
 }
