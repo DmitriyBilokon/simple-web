@@ -12,7 +12,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Testing..' 
-                docker_result = sh (script: 'docker ps -q', returnStdout: true )
+                def docker_result = sh (script: 'docker ps -q', returnStdout: true )
                 echo ${docker_result}
                 sh 'docker stop ${docker_result}'
                 sh 'docker run -d -p 80:80 simple-web'
