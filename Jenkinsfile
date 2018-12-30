@@ -11,8 +11,10 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo 'Testing..'              
-                sh "docker stop \$(docker ps -q)"
+                echo 'Testing..' 
+                out = sh (script: 'docker ps -q', returnStdout: true )
+                print $out
+                sh 'docker stop ${out}'
                 sh 'docker run -d -p 80:80 simple-web'
                 sh 'curl localhost:80'
             }
