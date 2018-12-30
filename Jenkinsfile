@@ -13,7 +13,7 @@ pipeline {
             steps {
                 echo 'Testing..' 
                 def docker_result = sh (script: 'docker ps -q', returnStdout: true )
-                echo ${docker_result}
+                echo '${docker_result}'
                 sh 'docker stop ${docker_result}'
                 sh 'docker run -d -p 80:80 simple-web'
                 sh 'curl localhost:80'
