@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: web-deployment
+  labels:
+    app: simple-web
+spec:
+  replicas: 2
+    spec:
+      containers:
+      - name: nginx
+        image: us.gcr.io/gitdocker/simple-web:latest
+        ports:
+        - containerPort: 80
+kind: Service
+apiVersion: v1
+metadata:
+  name: web2-service
+spec:
+  selector:
+    app: MyApp
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
