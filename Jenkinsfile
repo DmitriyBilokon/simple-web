@@ -5,7 +5,8 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                sh 'docker build -t simple-web -f Dockerfile .'
+                sh 'echo $USER'
+                sh 'docker build -t simple-web -f Dockerfile .'               
             }
         }
         stage('Test') {
