@@ -45,5 +45,9 @@ node('master'){
         }
         stage('Deploy') {
                 echo 'Deploying....'
+                sh "docker tag simple-web:latest us.gcr.io/gitdocker/simple-web:${env.BUILD_NUMBER}"
+                sh "docker push us.gcr.io/gitdocker/simple-web:${env.BUILD_NUMBER}"
+                sh "docker tag simple-web:latest us.gcr.io/gitdocker/simple-web:latest"
+                sh "docker push us.gcr.io/gitdocker/simple-web:latest"
         }
 }
