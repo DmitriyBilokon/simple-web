@@ -14,7 +14,9 @@ node('master'){
                 try{
                         sh 'docker stop ${docker_result}'
                 }
-                catch{}
+                catch (error){
+          
+                }
                 sh 'docker run -d -p 80:80 simple-web'
                 sh 'curl localhost:80'
 
