@@ -18,7 +18,7 @@ node('master'){
           
                 }
                 sh 'docker run -d -p 4000:80 simple-web'
-                sh 'curl localhost:4000'
+                sh 'curl -v localhost:4000'
 
         }
         stage('Deploy') {
