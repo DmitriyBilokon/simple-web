@@ -26,6 +26,14 @@ node('master'){
           
                 }
                 echo "$result"
+                docker_result = sh returnStdout: true, script: 'docker ps -q'
+                echo "$docker_result"
+                try{
+                        sh "docker stop $docker_result"
+                }
+                catch (error){
+          
+                }
                 if (result == 18){
                         echo "test ok"
                 }
@@ -33,6 +41,7 @@ node('master'){
                         echo "test nok"
                         throw "test nok"
                 }
+                
         }
         stage('Deploy') {
                 echo 'Deploying....'
