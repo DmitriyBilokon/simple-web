@@ -1,6 +1,6 @@
 node('master'){
         stage('Build') {
-
+                checkout scm
                 echo 'Building..'
                 sh 'echo $USER'
                 sh 'docker build -t simple-web -f Dockerfile .'               
