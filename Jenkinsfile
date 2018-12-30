@@ -9,10 +9,10 @@ node('master'){
         stage('Test') {
 
                 echo 'Testing..' 
-                docker_result = sh returnStdout: true, script: 'docker ps -q'
+                docker_result = sh returnStdout: true, script: 'docker ps -aq'
                 echo "$docker_result"
                 try{
-                        sh "docker stop $docker_result"
+                        sh "docker rm -f $docker_result"
                 }
                 catch (error){
           
@@ -26,10 +26,10 @@ node('master'){
           
                 }
                 echo "$result"
-                docker_result = sh returnStdout: true, script: 'docker ps -q'
+                docker_result = sh returnStdout: true, script: 'docker ps -aq'
                 echo "$docker_result"
                 try{
-                        sh "docker stop $docker_result"
+                        sh "docker rm -f $docker_result"
                 }
                 catch (error){
           
