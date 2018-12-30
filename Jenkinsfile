@@ -26,7 +26,7 @@ node('master'){
           
                 }
                 echo "$result"
-                if ($result == "18"){
+                if (result == "18"){
                         echo "test ok"
                 }
                 else{
