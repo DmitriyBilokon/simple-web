@@ -17,8 +17,8 @@ node('master'){
                 catch (error){
           
                 }
-                sh 'docker run -d -p 80:80 simple-web'
-                sh 'curl localhost:80'
+                sh 'docker run -d -p 4000:80 simple-web'
+                sh 'curl localhost:4000'
 
         }
         stage('Deploy') {
