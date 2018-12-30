@@ -9,8 +9,8 @@ node('master'){
         stage('Test') {
 
                 echo 'Testing..' 
-                docker_result = sh (script: 'docker ps -q', returnStdout: true )
-                println $docker_result
+                docker_result = sh returnStdout: true, script: 'docker ps -q'
+                echo '$docker_result'
                 sh 'docker stop ${docker_result}'
                 sh 'docker run -d -p 80:80 simple-web'
                 sh 'curl localhost:80'
