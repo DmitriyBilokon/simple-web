@@ -6,12 +6,11 @@ metadata:
     app: simple-web
 spec:
   replicas: 2
-    spec:
-      containers:
-      - name: nginx
-        image: us.gcr.io/gitdocker/simple-web:latest
-        ports:
-        - containerPort: 80
+  containers:
+  - name: nginx
+    image: us.gcr.io/gitdocker/simple-web:latest
+    ports:
+    - containerPort: 80
 kind: Service
 apiVersion: v1
 metadata:
