@@ -18,7 +18,7 @@ node('master'){
           
                 }
                 sh 'docker run -d -p 4000:80 simple-web'
-                sleep(3000)
+                sleep(3)
                 def result
                 try{
                         result = sh returnStatus: true, script: 'curl -v localhost:4000'
