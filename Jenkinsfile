@@ -50,4 +50,12 @@ node('master'){
                 sh "docker tag simple-web:latest us.gcr.io/gitdocker/simple-web:latest"
                 sh "docker push us.gcr.io/gitdocker/simple-web:latest"
         }
+        
+        stage('Create KudeClusters') {
+        echo 'Create Kube Clusters...'
+        sh 'gcloud config set project gitdocker'
+        sh "gcloud container clusters create simple-web-${env.BUILD_NUMBER} --zone us-central1-a --num-nodes 2"
+        
+        
+        }
 }
