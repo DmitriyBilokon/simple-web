@@ -24,7 +24,7 @@ node('master'){
                 catch (error){
           
                 }
-                if result.contains("200 OK"){
+                if (result.contains("200 OK")){
                         echo "test passed"
                 }
                 else{
