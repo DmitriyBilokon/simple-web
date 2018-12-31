@@ -1,16 +1,25 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: web-deployment
+  name: simple-web
   labels:
     app: simple-web
 spec:
   replicas: 3
-  containers:
-  - name: nginx
-    image: us.gcr.io/gitdocker/simple-web:latest
-    ports:
-    - containerPort: 80
+  template:
+    metadata:
+      labels:
+        app: simple-web
+    spec:
+      containers:
+      - name: web
+        image: us.gcr.io/gitdocker/simple-web:latest
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
 kind: Service
 apiVersion: v1
 metadata:
