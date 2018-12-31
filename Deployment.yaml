@@ -5,22 +5,12 @@ metadata:
   labels:
     app: simple-web
 spec:
-  replicas: 2
+  replicas: 3
   containers:
   - name: nginx
     image: us.gcr.io/gitdocker/simple-web:latest
     ports:
     - containerPort: 80
-kind: Pod
-metadata:
-  name: web-pod
-  labels:
-    app: simple-web
-spec:
-  containers:
-  - name: myapp-container
-    image: us.gcr.io/gitdocker/simple-web:latest
-    command: ['sh', '-c', 'echo Hello Kubernetes! && sleep 3600']
 kind: Service
 apiVersion: v1
 metadata:
