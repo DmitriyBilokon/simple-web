@@ -1,30 +1,57 @@
-apiVersion: extensions/v1beta1
-kind: Pod
+apiVersion: v1
+kind: Service
 metadata:
   name: simple-web
   labels:
     app: simple-web
 spec:
-  replicas:       5
+  type: LoadBalancer
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: customer
+---
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  name: "simple-web"
+  namespace: "default"
+  labels:
+    app: "simple-web"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "simple-web"
   template:
     metadata:
       labels:
-        app:      simple-web
+        app: "simple-web"
     spec:
+      volumes:
+      - name: google-cloud-key
+        secret:
+          secretName: "customer-simple-web-key"
       containers:
-      - name:     web
-        image:    us.gcr.io/gitdocker/simple-web:latest
-        ports:
-        - containerPort: 80
-kind: Service
-apiVersion: v1
+      - name: simple-web
+        image: us.gcr.io/gitdocker/simple-web:latest
+        command: ["./main"]
+        args: [@args@]
+---
+apiVersion: "autoscaling/v1"
+kind: "HorizontalPodAutoscaler"
 metadata:
-  name: web2-service
+  name: "customer-hpa-simple-web"
+  namespace: "default"
+  labels:
+    app: "customer"
 spec:
-  selector:
-    app: MyApp
-  type: LoadBalancer
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 80
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "customer-simple-web"
+    apiVersion: "apps/v1beta1"
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
