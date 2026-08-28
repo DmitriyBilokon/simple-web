@@ -73,9 +73,10 @@ def render_html(visits: VisitMap, current_client: str, now: datetime) -> str:
         except ValueError:
             age = RECENT_SECONDS + 1
         css = "recent" if age < RECENT_SECONDS else "stale"
+        noun = "request" if count == 1 else "requests"
         rows.append(
             f'<p class="{css}">#{html.escape(ts)}: '
-            f'<span class="count">{count}</span> requests '
+            f'<span class="count">{count}</span> {noun} '
             f"from &lt;<span class=\"ip\">{html.escape(guest)}</span>&gt; "
             f"to WebServer &lt;<span class=\"ip\">{html.escape(server_ip)}</span>&gt;</p>"
         )

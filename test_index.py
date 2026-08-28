@@ -37,7 +37,10 @@ class VisitLogicTest(unittest.TestCase):
         self.assertIn("9.9.9.9", page)
         self.assertIn('class="recent"', page)
         self.assertIn('class="stale"', page)
-        self.assertIn("<span class=\"count\">3</span>", page)
+        self.assertIn("<span class=\"count\">3</span> requests", page)
+        one: index.VisitMap = OrderedDict()
+        one["10.0.0.5|10.0.0.8"] = [1, now.strftime(index.TIME_FMT)]
+        self.assertIn("<span class=\"count\">1</span> request from", index.render_html(one, "10.0.0.5", now))
 
     def test_render_escapes_html(self) -> None:
         visits: index.VisitMap = OrderedDict()
@@ -47,7 +50,17 @@ class VisitLogicTest(unittest.TestCase):
         self.assertIn("&lt;script&gt;", page)
 
     def test_load_visits_rejects_corrupt_json(self) -> None:
-        self.assertEqual(index.load_visits(), OrderedDict())
+        cwd = os.getcwd()
+        tmp = tempfile.mkdtemp()
+        try:
+            os.chdir(tmp)
+            Path("visit_stats.json").write_text("{not json", encoding="utf-8")
+            self.assertEqual(index.load_visits(), OrderedDict())
+            Path("visit_stats.json").write_text("[]", encoding="utf-8")
+            self.assertEqual(index.load_visits(), OrderedDict())
+        finally:
+            os.chdir(cwd)
+            shutil.rmtree(tmp, ignore_errors=True)
 
 
 class ServerIntegrationTest(unittest.TestCase):
