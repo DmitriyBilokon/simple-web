@@ -1,0 +1,9 @@
+.git
+.gitignore
+__pycache__
+*.pyc
+test_index.py
+README.md
+visit_stats.json
+pickle_data.txt
+index.html
