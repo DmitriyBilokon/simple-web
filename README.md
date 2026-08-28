@@ -1,55 +1,56 @@
 simple_web
 ===
-A simple web server that outputs the IP addresses of the source and destination, very useful for testing loadbalancer to show real requests.
+A simple web server that shows the source and destination IP addresses of
+incoming requests. Useful for testing a load balancer and seeing which backend
+actually handled each request.
 
 # Supported tags and respective Dockerfile links
 
 * [`latest` (latest/Dockerfile)](https://github.com/yeasy/simple-web/blob/master/Dockerfile)
 
-For more information about this image and its history, please see the relevant manifest file in the [`yeasy/simple-web` GitHub repo](https://github.com/yeasy/simple-web).
+For more information about this image and its history, see
+[`yeasy/simple-web`](https://github.com/yeasy/simple-web).
 
 # What is simple-web?
-[simple-web](https://github.com/yeasy/simple-web) is a simple web to show the source and destination IP addresses of the received requests information, written in python.
+[simple-web](https://github.com/yeasy/simple-web) is a small Python HTTP server.
+Each visit to `/` is counted and written to `index.html` with:
 
+* client IP (source)
+* server IP this request landed on (destination)
+* request count and last-seen timestamp
+
+Recent visits (last 3 seconds) are highlighted in red.
 
 # How to use this image?
-The docker image is auto built at [https://registry.hub.docker.com/u/yeasy/simple-web/](https://registry.hub.docker.com/u/yeasy/simple-web/).
-
+The docker image is auto built at
+[https://registry.hub.docker.com/u/yeasy/simple-web/](https://registry.hub.docker.com/u/yeasy/simple-web/).
 
 ## In Dockerfile
 ```sh
 FROM yeasy/simple-web:latest
 ```
 
-## Local Run
+## Local run with Docker
 ```sh
-$ docker run --rm -it -p 80:80 yeasy/simple-web:latest
+docker build -t simple-web .
+docker run --rm -it -p 80:80 simple-web
 ```
 
+Then open http://localhost/ — each refresh increments the counter.
+
+## Local run without Docker
+Requires Python 3.9+:
+
+```sh
+python3 index.py 0.0.0.0 8080
+```
+
+Then open http://localhost:8080/
+
 # Which image is based on?
-The image is based on python:2.7
+The image is based on `python:3.12-slim`.
 
-# What has been changed?
-Add the index.py code.
-
-
-# Supported Docker versions
-
-This image is officially supported on Docker version 1.7.1.
-
-Support for older versions (down to 1.0) is provided on a best-effort basis.
-
-# User Feedback
-## Documentation
-Be sure to familiarize yourself with the [repository's `README.md`](https://github.com/yeasy/simple-web/blob/master/README.md) file before attempting a pull request.
-
-## Issues
-If you have any problems with or questions about this image, please contact us through a [GitHub issue](https://github.com/yeasy/simple-web/issues).
-
-You can also reach many of the official image maintainers via the email.
-
-## Contributing
-
-You are invited to contribute new features, fixes, or updates, large or small; we are always thrilled to receive pull requests, and do our best to process them as fast as we can.
-
-Before you start to code, we recommend discussing your plans through a [GitHub issue](https://github.com/yeasy/simple-web/issues), especially for more ambitious contributions. This gives other contributors a chance to point you in the right direction, give you feedback on your design, and help you find out if someone else is working on the same thing.
+# Tests
+```sh
+python3 -m unittest test_index.py
+```
